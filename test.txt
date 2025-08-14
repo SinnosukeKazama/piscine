@@ -1,0 +1,4 @@
+git add .
+git status //for check
+git commit -m "comment"
+git push
