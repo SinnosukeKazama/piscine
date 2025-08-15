@@ -31,11 +31,12 @@ char    *ft_strncat(char* dest, char* src, unsigned int nb)
 int main(void)
 {
     char s[80];
+    unsigned int bytes = 3;
 
     strcpy(s, "abcde");
-    puts(ft_strncat(s, "fghij", 2));
+    puts(ft_strncat(s, "fghij", bytes));
 
     strcpy(s, "abcde");
-    puts(strncat(s, "fghij", 2));
+    puts(strncat(s, "fghij", bytes));
   
 }
