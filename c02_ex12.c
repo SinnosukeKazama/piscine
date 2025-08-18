@@ -1,85 +1,117 @@
 #include <stdio.h>
-//
-//本番ではwhiteを使うため、出力はcharに限られる
 
+//sはもとの数字と逆
+void itoa(char s[], unsigned long long n, int radix) {
+	int i;
+	int mod;
 
-//? 行の最初の文字のアドレス（16進数で表したアドレス）と、‘:’ が出力され
-//  るようにしてください。
-void	char_to_hex(char c)
-{
-	
-}
-void	print_hex(char c)
-{
-	if (c < 32 || c < 127)
+	i = 0;
+	while (n > 0) /* n を削る */
 	{
-		char_to_hex(c);
+		mod = n % radix;
+		if (radix == 16 && mod > 9)
+			s[i] = mod - 10 + 'a';
+		else
+			s[i] = mod + '0'; /* 次の桁 */
+		n /= radix;
+
+		++i;
+	}
+	s[i] = '\0';
+}
+int ft_strlen(char* addr)
+{
+	int i;
+
+	i = 0;
+	while (addr[i] != '\0')
+		++i;
+	return (i);
+} 
+void out_addr(char* addr)
+{
+	char dest[32];
+	int i;
+	int len;
+
+	i = -1;
+	itoa(dest, addr, 16);
+	len = ft_strlen(dest);
+	while (++i < 16 - len)
+		printf("0");
+	while (--len>=0)
+		printf("%c", dest[len]);
+
+	
+	//printf("<%p>", addr);//for check
+}
+void out_hex(char* addr)
+{
+	int i;
+	char dest[3];
+	int sp_c =0;
+	int all_len;
+	int need_sp;
+
+	i = 0;
+	while (i < 16 && addr[i] != '\0')
+	{
+		if (i % 2 == 0)
+		{
+			printf(" ");
+			sp_c++;
+		}
+			
+		
+		itoa(dest, addr[i], 16);
+		printf("%c%c", dest[1], dest[0]);
+		++i;
+	}
+	all_len = i * 2 + sp_c;
+	need_sp = 40 - all_len;
+	i = 0;
+	while (i < need_sp)
+	{
+		printf(" ");
+		++i;
 	}
 	
 }
-void print_addr(void *addr)
+void out_str(char* addr)
 {
+	int i;
 
+	i = 0;
+	printf(" ");
+	while (i < 16 && addr[i]!='\0')
+	{
+		if (32 <= addr[i] && addr[i] <= 126)
+			printf("%c", addr[i]);
+		else
+			printf(".");
+		++i;
+	}
 }
-
 
 void	*ft_print_memory(void* addr, unsigned int size)
 {
 	int i;
 
-	
 	i = 0;
-	print_addr(addr);
 	while (i < size)
 	{
-		
-		print_hex(*(char*)(addr));
-		printf("%c", *(char*)(addr));
-		++(char*)addr;
-		++i;
+		out_addr((char*)(addr)+i);
+		printf(":");
+		out_hex((char*)(addr)+i);
+		out_str((char*)(addr)+i);
+		printf("\n");
+		i += 16;
 	}
 }
 
-int		str_to_int(const char* str)
-{
 
-	int n = 0;
-	const char* p = str;
-	for (; *p; ++p) {
-		n *= 10;     // "10": n = 0 * 10 = 0         ;n = 10 
-		n += *p - '0';//      n = n + ('1' - '0') = 1 n =
-	}
-	return n;
-}
-
-char* int_to_str(int n, int digits, char *str)
-{
-	
-	while (n <= 0) {
-
-	}
-
-	/*
-	n = 10:
-	 n = n /10 = 1
-	 n = n + '0' = 49 , 
-	 str[0] = (char)n = '1'
-	 str[1 = n] = 0
-	*/
-}
 ///////////////////////
 int main() {
-	static const char s[] = { "10" };
-	
-	int value = 99;
-	char bf[3];
-	bf[0] = ((value / 10) ) + '0';
-	bf[1] = (value % 10) + '0';
-	bf[2] = '\0';
-	printf("%s", bf);
-	//printf("%d", str_to_int(s));
-	//char str[] = "afs";
-	//ft_print_memory(str, 4);
-	//printf("%p,\n, %llu", str,(unsigned long long)str);
-
+	char s[] = "abcdefghijklnmopq ert ffoiefhn fpejmwfwq'fn femejofe]";
+	ft_print_memory(s, sizeof(s));
 }
